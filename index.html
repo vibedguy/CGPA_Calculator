@@ -1,0 +1,312 @@
+<html>
+    <head>
+    <title>CGPA CALCULATOR</title>
+    <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    </head>
+    <body>  <ul>
+        <div id="navbar" class="navv" >
+        
+        
+            <li> <a href="https://github.com/vibedguy/CGPA_Calculator/" class="">GITHUB</a>
+      </ul>
+    
+ 
+    <h1>CGPA CALCULATOR</h1> 
+    
+    <div id="course-wrapper">
+      <form class="key-0">
+        <p> <label id="course-row" for="courses">Courses:</label> 
+         <label id="credit-row" for="credit-units">Credit Units:</label>
+       <label id="grade-row" for="grade">Grades: </label></p>
+          <input
+            type="text"
+            placeholder="Course Code"
+            class="courses key-0"
+            required/>
+<label for="credit-units"></label>
+          <input
+            type="number"
+            class="credit-units key-0"
+            placeholder="Credit Units"
+            value=""
+            required>
+<label for="grade"></label>
+          <select class="grade key-0" required>
+            <option class="grade" value="select">Select</option>
+            <option class="grade" value="5">O</option>
+            <option class="grade" value="4.5">A+</option>
+            <option class="grade" value="4">A</option>
+            <option class="grade" value="3.5">B+</option>
+            <option class="grade" value="3">B</option>
+            <option class="grade" value="2">C</option>
+            <option class="grade" value="0">U</option>
+          </select>
+      </form>
+    </div>
+    
+    <div class="btn">
+      <button onclick="addCourse()">+ Add Course</button>
+      <button onclick="removeCourse()">- Remove Course</button><br>
+      <button onclick="calcCgpa()">Calculate CGPA</button>
+    </div>
+    <div class="lastp">
+      <p id="cgpa-calc">Your CGPA is:</p>
+    </div>
+  </div>
+
+  <script>function gradeCalc(grade, unit) {
+    if (grade === "O") {
+      return 10 * unit;
+    } else if (grade === "A+") {
+      return 9 * unit;
+    } else if (grade === "A") {
+      return 8 * unit;
+    } else if (grade === "B+") {
+      return 7 * unit;
+    } else if (grade === "B") {
+      return 6 * unit;
+    } else if (grade === "C") {
+      return 5 * unit;
+    } else if (grade === "U") {
+      return 0 * unit;
+    }
+  }
+  
+  let counter = 1;
+  
+  function addCourse() {
+    let addNew = document.createElement("form");
+    addNew.classList.add("add_new", `key-${counter}`);
+    const course_name = `
+    <form class="add_new key-${counter}">
+      <input type="text" placeholder="Course Code" class="courses key-${counter}" required>
+          <input type="number" placeholder="Credit Unit" class="credit-units key-${counter}" required>
+          <select class="grade key-${counter}" required>
+        <option value="select">Select</option>
+        <option value="5">O</option>
+        <option value="4.5">A+</option>
+        <option value="4">A</option>
+        <option value="3.5">B+</option>
+        <option value="3">B</option>
+        <option value="2">C</option>
+        <option value="0">U</option>
+      </select>  
+    </form>
+    `;
+    addNew.innerHTML = course_name;
+    document.getElementById("course-wrapper").appendChild(addNew);
+    counter++;
+  }
+  
+  function removeCourse() {
+    let mainForm = document.querySelector("form.add_new");
+    mainForm.remove();
+  }
+  
+  const reports = [];
+  
+  
+  function calcCgpa() {
+    const CGPAPARAGRAPH = document.getElementById("cgpa-calc");
+    const GRADESSELECT = document.querySelectorAll("select.grade");
+    const UNIT = document.querySelectorAll("input.credit-units");
+  
+    const courseReport = {};
+  
+    const listOfGrades = [];
+    const listOfUnits = [];
+    let totalUnits = 0;
+  
+    GRADESSELECT.forEach((e) => {
+      let GRADES = e.options;
+      const selectedIndex = e.selectedIndex;
+      const selectedGrade = GRADES[selectedIndex];
+      const gradeValue = selectedGrade.text.toUpperCase();
+      listOfGrades.push(gradeValue);
+    });
+    console.log(listOfGrades);
+  
+    UNIT.forEach((e) => {
+      const unitValue = parseInt(e.value);
+      totalUnits += unitValue;
+      listOfUnits.push(unitValue);
+    });
+    console.log(listOfUnits);
+  
+    let totalEarnedUnits = 0;
+  
+    for (let i = 0; i < listOfUnits.length; i++) {
+      totalEarnedUnits += gradeCalc(listOfGrades[i], listOfUnits[i]);
+    }
+    const gpa = totalEarnedUnits / totalUnits;
+    
+    if (gpa >= 0){
+      CGPAPARAGRAPH.textContent = "Your CGPA is " + gpa.toFixed(2);   
+    } else {
+      CGPAPARAGRAPH.textContent = "Please Enter Your Correct Grade and Credit Units";    
+    }
+    
+  }
+
+  </script>
+<style>
+    * {
+  margin: 0;
+  padding: 0;
+  box-sizing: border-box;
+  font-family: sans-serif;
+}
+
+
+body {
+  background-image:url('https://www.pixel4k.com/wp-content/uploads/2020/02/lights-motion_1580590028.jpg.webp');
+  background-repeat: no-repeat;
+  background-size: 100% 100%;
+  color: white;
+}
+
+#course-row {
+  font-size: 20px;
+  font-weight: bolder; 
+  margin-left: -2%;
+}
+
+#credit-row {
+  font-size: 20px;
+  font-weight: bolder;
+  margin-left: 13%;
+}
+
+#grade-row {
+  font-size: 20px;
+  font-weight: bolder;
+  margin-left: 8%;
+}
+
+.calculator-box {
+  width: 50%;
+  height: auto;
+  border: 2px solid #3D515C;
+  margin: 100px auto;
+/*  text-align: center; */
+}
+
+
+.gpa{
+    color: #fff;
+    margin-left: 45%;
+}
+
+h1 {
+  padding: 15px;
+  font-size: 40px;
+  text-align: center;
+  color: #000;
+}
+
+
+p{
+  padding: 20px;
+  font-size: 1rem;
+  color: black;
+  text-align: center;
+}
+ 
+#course-wrapper, form {
+  color: black;
+  padding-left: 10px;
+  margin: 0 auto;
+  text-align: center;
+}
+input{
+  border: none;
+  padding: 15px;
+  margin: 10px;
+  border-radius: 5px;
+  width: 20%;
+  text-align: center;
+}
+select{
+  padding: 15px;
+  border: none;
+  border-radius: 7.5px;
+  width: 20%;
+/* height: 30px; */
+ color: #000;
+}
+ button {
+  width: 15%;
+  height: 40px;
+  padding: 1px;
+  margin: 5px auto;
+  margin-left: 10px; 
+  border-radius: 12px;
+}
+
+ button:hover {
+   padding: 1px;
+  margin: 5px auto;
+    border-radius: 12px;
+  color: #fff;
+  background: #000;
+  
+}
+ul {
+    list-style-type: none;
+    margin: 0;
+    padding: 30;
+    overflow: auto;
+    background-color:transparent;
+    border-radius: 12px;
+  }
+  
+  li {
+    float: left;
+  }
+  body
+  {
+      background-color: #ffffff;
+  }
+  li a {
+      display: block;
+      color: rgb(255, 255, 255);
+      text-align: left;
+      padding: 10px 10px;
+      text-decoration: none;
+      font-family:Century;
+     
+      
+    }
+li:hover
+{
+    background-color: rgb(255, 255, 255);
+    background-color: #000000;
+    color:rgb(255, 255, 255);
+    box-shadow: 0 12px 16px 0 rgba(0,0,0,0.24),0 17px 50px 0 rgba(0,0,0,0.19);
+    border-radius: 10px;
+}
+
+.btn {
+  width: 100%;
+  padding: 10px;
+  display: inline-block;
+  margin: 0 auto;
+  text-align: center;
+}
+.lastp {
+  border: 1px solid #ffffff;
+  background-color: #ffffff;
+}
+.lastp p {
+  color: rgb(0, 0, 0);
+  text-align: center;
+  padding: 10px;
+  font-size: 30px;
+  font-weight: bolder;
+} 
+
+
+
+
+</style>
